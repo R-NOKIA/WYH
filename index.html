@@ -54,6 +54,7 @@ html, body {
     opacity: 0;
     transition: opacity 2s ease;
     z-index: 10;
+    -webkit-overflow-scrolling: touch;
 }
 
 #scrollbox p {
@@ -419,16 +420,19 @@ function drawRose() {
 // 自动滚动
 function autoScroll() {
     const box = document.getElementById('scrollbox');
-    let speed = 0.5; 
+    let speed = 1;
 
-    setInterval(() => {
+    function step() {
         box.scrollTop += speed;
-        // 如果滚动到底部，回到顶部重新滚
+
         if (box.scrollTop + box.clientHeight >= box.scrollHeight) {
             box.scrollTop = 0;
         }
-    }, 30);
+        requestAnimationFrame(step); // 比 setInterval 更适合手机
+    }
+    requestAnimationFrame(step);
 }
+
 
 document.body.addEventListener('click', function () {
     if (started) return;
